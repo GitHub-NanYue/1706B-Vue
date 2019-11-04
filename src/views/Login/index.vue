@@ -3,24 +3,36 @@
     <van-nav-bar title="圈子登陆" left-text="返回" left-arrow>
         <van-icon name="search" slot="right" />
     </van-nav-bar>
-    <el-input class="userName" placeholder="用户名" v-model="input" clearable></el-input>
+    <el-input class="userName" placeholder="用户名" v-model="userName" clearable @blur="CheckuserName"></el-input>
     <el-input class="passWord" placeholder="密码" v-model="passWord" show-password></el-input>
-    <div class="LoginBtn" @click="LoginBtn()">登陆</div>
+    <div class="LoginBtn" @click="LoginBtn">登陆</div>
     <span class="registerSize"><router-link to="/Register">没有账号，快速注册</router-link></span>
   </div>
 </template>
 <script>
+import {login} from '../../service/index'
 export default {
   data() {
     return {
-      input: '',
+      userName: '',
       passWord:''
     }
   },
   methods:{
-      LoginBtn(){
-          console.log("121231")
-      }
+      async LoginBtn(){
+          let {userName,passWord} = this;
+          let result = await login({userName,passWord});
+          console.log('result',result)
+          if(result && result.data.code ===1){
+
+          }
+          alert(result.data.msg)
+      },
+    CheckuserName(){
+        if(!/\w{3,16}/.test(this.userName)){
+            alert('请输入正确的用户名')
+        }
+    }
   }
 }
 </script>

@@ -3,19 +3,32 @@
         <van-nav-bar title="注册圈子" left-text="返回" left-arrow>
             <van-icon name="search" slot="right" />
         </van-nav-bar>
-        <el-input class="userName1" placeholder="用户名" v-model="input" clearable></el-input>
+        <el-input class="userName1" placeholder="用户名" v-model="userName" clearable></el-input>
         <el-input class="passWord1" placeholder="密码" v-model="passWord" show-password></el-input>
-        <div class="RegisterBtn">注册</div>
+        <div class="RegisterBtn" @click="Register">注册</div>
 
     </div>
 </template>
 <script>
+import {register} from '../../service/index'
 export default {
     data() {
     return {
-      input: '',
+      userName: '',
       passWord:''
     }
+  },
+  methods:{
+      async Register(){
+          let {userName,passWord} = this
+          let result = await register({userName,passWord});
+          console.log('Register',result)
+          if(result && result.data === 0){
+              alert(result.data.msg)
+          }else{
+              window.history.back();
+          }
+      }
   }
 }
 </script>
